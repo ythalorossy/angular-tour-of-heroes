@@ -17,5 +17,3 @@ FROM nginx:latest
 COPY --from=build app/dist/browser /usr/share/nginx/html
 
 EXPOSE 80
-
-# CMD ["ng", "serve", "--host", "0.0.0.0"]
