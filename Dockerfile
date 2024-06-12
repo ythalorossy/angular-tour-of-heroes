@@ -12,8 +12,12 @@ COPY . .
 
 RUN ng build
 
-FROM nginx:latest
+FROM nginx:alpine
 
 COPY --from=build app/dist/browser /usr/share/nginx/html
 
-EXPOSE 80
+COPY nginx.conf /etc/nginx/
+
+EXPOSE 9080
+
+CMD ["nginx", "-g", "daemon off;"]
