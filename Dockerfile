@@ -1,13 +1,21 @@
-FROM node:18
+FROM node:18.20.0 as build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY . /usr/src/app
-
-RUN npm install -g @angular/cli
+COPY package*.json ./
 
 RUN npm install
 
-EXPOSE 4200
+RUN npm install -g @angular/cli
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+COPY . .
+
+RUN ng build
+
+FROM nginx:latest
+
+COPY --from=build app/dist/browser /usr/share/nginx/html
+
+EXPOSE 80
+
+# CMD ["ng", "serve", "--host", "0.0.0.0"]
